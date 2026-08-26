@@ -1,0 +1,163 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PANEL",
+    "meta": {
+        "version": "PLCN_v3",
+        "update_url": null
+    },
+    "exported_at": "2026-08-26T15:46:56+00:00",
+    "name": "Gate",
+    "author": "andreisugu@gmail.com",
+    "uuid": "9af245db-97c2-4a3b-aef0-b0db95d55c08",
+    "description": "Gate is an extensible, high-performance Minecraft proxy server written in Go. It provides multi-server routing, native GeyserLite Bedrock cross-play, player transfers, Connect network integration, and OpenTelemetry observability with ultra-low memory and CPU footprint.",
+    "icon": "data:image/png;base64,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",
+    "tags": [],
+    "features": [],
+    "docker_images": {
+        "Debian (Pelican - Recommended)": "ghcr.io/pelican-eggs/yolks:debian",
+        "Java 21 (Pelican - Legacy Geyser fallback)": "ghcr.io/pelican-eggs/yolks:java_21",
+        "Ubuntu 24.04 (Pelican)": "ghcr.io/pelican-eggs/yolks:ubuntu",
+        "Debian (Pterodactyl)": "ghcr.io/pterodactyl/yolks:debian",
+        "Ubuntu 24.04 (Parkervcp)": "ghcr.io/parkervcp/yolks:ubuntu",
+        "Alpine (Pelican)": "ghcr.io/pelican-eggs/yolks:alpine"
+    },
+    "file_denylist": [],
+    "startup_commands": {
+        "Default": "./{{SERVER_BINARY}}"
+    },
+    "config": {
+        "files": "{\n    \"config.yml\": {\n        \"parser\": \"file\",\n        \"find\": {\n            \"  bind:\": \"  bind: 0.0.0.0:{{server.allocations.default.port}}\"\n        }\n    }\n}",
+        "startup": "{\n    \"done\": \"listening for connections\"\n}",
+        "logs": "{}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!/bin/ash\n# Gate Prebuilt or Self-Building Installation Script\n# Server: Gate (Minecraft proxy written in Go)\n# Repository: https://github.com/minekube/gate\n\nset -eux\n\nBUILD_SRC=\"${BUILD_FROM_SOURCE:-0}\"\nPLUGINS=\"${GATE_PLUGINS:-}\"\nVERSION=\"${GATE_VERSION:-latest}\"\nDOWNLOAD_LINK=\"${DOWNLOAD_URL:-}\"\nBINARY_NAME=\"${SERVER_BINARY:-gate}\"\nBUILD_URL=\"${BUILD_SCRIPT_URL:-https://raw.githubusercontent.com/andreisugu/gate-plugin-builder/refs/heads/main/build.sh}\"\n\nmkdir -p /mnt/server\ncd /mnt/server\n\n# Mode A: Build from source with build.sh engine (when requested or plugins are configured)\nif [ \"$BUILD_SRC\" = \"1\" ] || [ -n \"$PLUGINS\" ] || [ -f \"/mnt/server/plugins.txt\" ]; then\n    echo \"============================================================\"\n    echo \"  \ud83d\udd28 Building Gate Proxy + Extensions via build.sh\"\n    echo \"============================================================\"\n\n    if command -v apk >/dev/null 2>&1; then\n        apk add --no-cache curl jq ca-certificates git go bash\n    elif command -v apt-get >/dev/null 2>&1; then\n        apt-get update && apt-get install -y --no-install-recommends curl jq ca-certificates git golang-go bash\n    fi\n\n    export GOPROXY=\"${GOPROXY:-https://proxy.golang.org,direct}\"\n    export GOTOOLCHAIN=\"${GOTOOLCHAIN:-auto}\"\n\n    # Use /mnt/server (disk storage) rather than /tmp (which is tmpfs RAM in containers)\n    BUILD_DIR=\"/mnt/server/.build_tmp\"\n    rm -rf \"$BUILD_DIR\"\n    mkdir -p \"$BUILD_DIR\"\n    cd \"$BUILD_DIR\"\n\n    export GOTMPDIR=\"$BUILD_DIR/gotmp\"\n    export GOCACHE=\"$BUILD_DIR/gocache\"\n    mkdir -p \"$GOTMPDIR\" \"$GOCACHE\"\n\n    # Copy plugins.txt manifest if present on server\n    if [ -f \"/mnt/server/plugins.txt\" ]; then\n        cp -f \"/mnt/server/plugins.txt\" ./plugins.txt\n    fi\n\n    # Fetch builder engine script\n    if [ -f \"/mnt/server/build.sh\" ]; then\n        echo \"Using local /mnt/server/build.sh builder engine...\"\n        cp -f \"/mnt/server/build.sh\" ./build.sh\n    else\n        echo \"Fetching build engine from: $BUILD_URL\"\n        curl -sSL -f -o ./build.sh \"$BUILD_URL\" || {\n            echo \"Fallback: fetching builder from minekube/gate-plugin-template...\"\n            curl -sSL -f -o ./build.sh \"https://raw.githubusercontent.com/minekube/gate-plugin-template/main/build.sh\"\n        }\n    fi\n\n    chmod +x ./build.sh\n\n    # Execute build engine with low-ram safeguard\n    OUTPUT_BINARY=\"/mnt/server/${BINARY_NAME}\" \\\n    GATE_VERSION=\"${VERSION}\" \\\n    GATE_PLUGINS=\"${PLUGINS}\" \\\n    LOW_RAM=1 \\\n    bash ./build.sh --low-ram\n\n    cd /mnt/server\n    rm -rf \"$BUILD_DIR\"\n\n# Mode B: Download official prebuilt release binary\nelse\n    echo \"============================================================\"\n    echo \"  \u26a1 Downloading Prebuilt Gate Release\"\n    echo \"============================================================\"\n\n    if command -v apk >/dev/null 2>&1; then\n        apk add --no-cache curl jq ca-certificates\n    elif command -v apt-get >/dev/null 2>&1; then\n        apt-get update && apt-get install -y --no-install-recommends curl jq ca-certificates\n    fi\n\n    ARCH=\"amd64\"\n    case \"$(uname -m)\" in\n        x86_64) ARCH=\"amd64\" ;;\n        aarch64|arm64) ARCH=\"arm64\" ;;\n        i386|i686) ARCH=\"386\" ;;\n        *) ARCH=\"amd64\" ;;\n    esac\n\n    GITHUB_PACKAGE=\"minekube/gate\"\n\n    if [ -n \"$DOWNLOAD_LINK\" ]; then\n        FINAL_URL=\"$DOWNLOAD_LINK\"\n    elif [ -z \"$VERSION\" ] || [ \"$VERSION\" = \"latest\" ]; then\n        LATEST_TAG=$(curl -sSL \"https://api.github.com/repos/$GITHUB_PACKAGE/releases/latest\" | (jq -r '.tag_name // empty' 2>/dev/null || grep -o '\"tag_name\": *\"[^\"]*\"' | head -n 1 | cut -d '\"' -f 4))\n        if [ -z \"$LATEST_TAG\" ]; then\n            LATEST_TAG=\"v0.71.3\"\n        fi\n        VERSION_NUM=$(echo \"$LATEST_TAG\" | sed \"s/^v//\")\n        FINAL_URL=\"https://github.com/$GITHUB_PACKAGE/releases/download/${LATEST_TAG}/gate_${VERSION_NUM}_linux_${ARCH}\"\n    else\n        VERSION_NUM=$(echo \"$VERSION\" | sed \"s/^v//\")\n        TAG=\"v${VERSION_NUM}\"\n        FINAL_URL=\"https://github.com/$GITHUB_PACKAGE/releases/download/${TAG}/gate_${VERSION_NUM}_linux_${ARCH}\"\n    fi\n\n    echo \"Downloading Gate binary from: $FINAL_URL\"\n    curl -sSL -L -f -o \"${BINARY_NAME}.tmp\" \"$FINAL_URL\"\n\n    if [ ! -s \"${BINARY_NAME}.tmp\" ]; then\n        echo \"ERROR: Downloaded binary is empty or missing!\"\n        exit 1\n    fi\n\n    chmod +x \"${BINARY_NAME}.tmp\"\n    mv -f \"${BINARY_NAME}.tmp\" \"$BINARY_NAME\"\nfi\n\nchmod +x \"/mnt/server/$BINARY_NAME\"\n\n# If config.yml already exists, preserve it; otherwise create initial default config\nif [ -f \"config.yml\" ]; then\n    echo \"Existing configuration detected (config.yml). Preserving existing settings and data.\"\nelse\n    echo \"Fresh installation detected. Creating default configuration file (config.yml)...\"\n    cat << 'CONFIG_EOF' > config.yml\n# Gate proxy configuration for Minecraft Java Edition\nconfig:\n  # The bind address to listen for Minecraft client connections.\n  bind: 0.0.0.0:25565\n  # Whether to use the proxy in online (authenticate players with Mojang API) or offline mode (not recommended).\n  onlineMode: true\n  # Registers servers with the proxy by giving the address of backend server a custom reference name.\n  servers:\n    # Server name: server address\n    server1: localhost:25566\n    server2: localhost:25567\n    server3: localhost:25568\n    server4: localhost:25569\n  # The list of servers to try (ordered) to connect a player to\n  # upon login or fallback when a player is kicked from a server.\n  try:\n    - server1\n    - server2\n    - server3\n    - server4\n  # Configure the response for server list pings.\n  status:\n    # The message of the day in legacy '\u00a7' format or modern text component '{\"text\":\"...\", ...}' json.\n    motd: |\n      \u00a7bA Gate Proxy\n      \u00a7bVisit \u279e \u00a7fgithub.com/minekube/gate\n    # The maximum players shown (is not the actual player limit!).\n    showMaxPlayers: 1000\n    # Whether to log ping requests in the console.\n    logPingRequests: false\n    # Whether the proxy should present itself as Forge/FML-compatible server.\n    announceForge: false\n  # Allows players transferred from other hosts via the\n  # Transfer packet (Minecraft 1.20.5) to be received.\n  # Default: false\n  acceptTransfers: false\n  # Whether the proxy should support bungee plugin channels.\n  # (Disable this if your backend servers are untrusted.)\n  bungeePluginChannelEnabled: true\n  # Whether to register builtin commands on proxy start.\n  # Default: true\n  builtinCommands: true\n  # Whether players require permissions to\n  # execute a builtin proxy command like /server.\n  # Ignore this if `builtinCommands` is set to false.\n  # (This should be set to true in production environments.)\n  # Default: false\n  requireBuiltinCommandPermissions: false\nCONFIG_EOF\nfi\n\necho \"Installation complete for Gate ($BINARY_NAME).\"\n",
+            "container": "ghcr.io/pterodactyl/installers:alpine",
+            "entrypoint": "ash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Build From Source",
+            "description": "Compile Gate directly in the container using build.sh. Automatically enables custom plugin bundling.\n1 -> Build from source (Default when plugins are specified)\n0 -> Download official prebuilt release binary",
+            "env_variable": "BUILD_FROM_SOURCE",
+            "default_value": "0",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": [
+                "required",
+                "boolean"
+            ],
+            "sort": 1
+        },
+        {
+            "name": "Gate Go Plugins (List or URLs)",
+            "description": "List of Go plugins or Git URLs to bundle (comma, space, or newline separated).\nSupports Go module paths (e.g. github.com/andreisugu/gate-hybridforwarding), HTTPS/SSH Git URLs (e.g. https://github.com/user/plugin.git), and pinned versions (@v1.0.0).\nIf populated, Build From Source is automatically triggered.",
+            "env_variable": "GATE_PLUGINS",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": [
+                "nullable",
+                "string"
+            ],
+            "sort": 2
+        },
+        {
+            "name": "Gate Version",
+            "description": "The version tag of Gate to download or build (defaults to latest, or specify a tag like v0.71.3).\nScope: installation",
+            "env_variable": "GATE_VERSION",
+            "default_value": "latest",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": [
+                "required",
+                "string",
+                "max:64"
+            ],
+            "sort": 3
+        },
+        {
+            "name": "Builder Script URL",
+            "description": "Remote URL to fetch the build.sh builder engine from when compiling from source.",
+            "env_variable": "BUILD_SCRIPT_URL",
+            "default_value": "https://raw.githubusercontent.com/andreisugu/gate-plugin-builder/refs/heads/main/build.sh",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": [
+                "nullable",
+                "string"
+            ],
+            "sort": 4
+        },
+        {
+            "name": "Download URL",
+            "description": "Direct URL to download the prebuilt Gate binary from (only used when Build From Source = 0 and no plugins specified).\nScope: installation",
+            "env_variable": "DOWNLOAD_URL",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": [
+                "nullable",
+                "string"
+            ],
+            "sort": 5
+        },
+        {
+            "name": "Server Executable Binary",
+            "description": "The name of the executable binary saved and run on the server.\nScope: installation / startup",
+            "env_variable": "SERVER_BINARY",
+            "default_value": "gate",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": [
+                "required",
+                "string",
+                "max:64"
+            ],
+            "sort": 6
+        },
+        {
+            "name": "Debug Mode",
+            "description": "Enable debug mode and highest log verbosity.\n0 -> disabled (default)\n1 -> enabled",
+            "env_variable": "GATE_DEBUG",
+            "default_value": "0",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": [
+                "required",
+                "boolean"
+            ],
+            "sort": 7
+        },
+        {
+            "name": "Logging Verbosity",
+            "description": "The higher the verbosity the more logs are shown (default: 0).",
+            "env_variable": "GATE_VERBOSITY",
+            "default_value": "0",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": [
+                "required",
+                "numeric",
+                "min:0",
+                "max:10"
+            ],
+            "sort": 8
+        },
+        {
+            "name": "Disable Config Auto Reload",
+            "description": "Whether to disable automatic config file reloading when config.yml is modified.\n0 -> auto reload enabled (default)\n1 -> auto reload disabled",
+            "env_variable": "GATE_NO_AUTO_RELOAD",
+            "default_value": "0",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": [
+                "required",
+                "boolean"
+            ],
+            "sort": 9
+        }
+    ]
+}
