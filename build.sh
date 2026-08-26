@@ -79,6 +79,7 @@ TARGET_OS="${TARGET_OS:-$(go env GOOS 2>/dev/null || echo "linux")}"
 TARGET_ARCH="${TARGET_ARCH:-$(go env GOARCH 2>/dev/null || echo "amd64")}"
 PLUGIN_FILE="${PLUGIN_FILE:-}"
 ENABLE_DEBUG=false
+FORCE_LOW_RAM=false
 DRY_RUN=false
 SKIP_PATCHELF=false
 DO_CLEAN=false
@@ -102,6 +103,7 @@ ${BOLD}OPTIONS:${RESET}
     ${CYAN}-v, --version <tag>${RESET}       Gate upstream version or tag (default: 'latest').
     ${CYAN}-t, --target <os/arch>${RESET}   Target platform (e.g. 'linux/amd64', 'linux/arm64', 'windows/amd64').
     ${CYAN}-d, --debug${RESET}               Enable debug build (preserves symbol tables and line numbers).
+    ${CYAN}--low-ram${RESET}                Force ultra-low RAM compilation mode (ideal for 512MB/1GB VPS & Pelican).
     ${CYAN}-c, --clean${RESET}               Clean build artifacts, temporary files, and go cache.
     ${CYAN}--no-patch${RESET}                Skip ELF interpreter patching on Linux.
     ${CYAN}--dry-run${RESET}                 Generate 'gate.go' and 'go.mod' without compiling.
@@ -110,6 +112,7 @@ ${BOLD}OPTIONS:${RESET}
 ${BOLD}ENVIRONMENT VARIABLES:${RESET}
     ${YELLOW}GATE_PLUGINS${RESET}             Comma or space-separated list of plugins (Pelican/Docker compatible).
     ${YELLOW}PLUGIN_FILE${RESET}              Path to plugins text file (e.g. 'plugins.txt').
+    ${YELLOW}LOW_RAM${RESET}                  Set to '1' to force single-threaded low-memory compilation.
     ${YELLOW}SERVER_BINARY${RESET}            Pelican server executable name (default: 'gate').
     ${YELLOW}GATE_VERSION${RESET}             Upstream Gate version (default: 'latest').
     ${YELLOW}OUTPUT_BINARY${RESET}            Target output binary name.
@@ -170,6 +173,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         -d|--debug)
             ENABLE_DEBUG=true
+            shift
+            ;;
+        --low-ram|--low-memory)
+            FORCE_LOW_RAM=true
             shift
             ;;
         -c|--clean)
@@ -534,6 +541,59 @@ fi
 # -----------------------------------------------------------------------------
 # 10. Compile Gate Binary
 # -----------------------------------------------------------------------------
+detect_memory_budget() {
+    local mem_limit_bytes=""
+    if [ -f "/sys/fs/cgroup/memory.max" ]; then
+        local val
+        val=$(cat /sys/fs/cgroup/memory.max 2>/dev/null || true)
+        if [ "$val" != "max" ] && [ -n "$val" ]; then
+            mem_limit_bytes="$val"
+        fi
+    elif [ -f "/sys/fs/cgroup/memory/memory.limit_in_bytes" ]; then
+        local val
+        val=$(cat /sys/fs/cgroup/memory/memory.limit_in_bytes 2>/dev/null || true)
+        if [ -n "$val" ] && [ "$val" -lt 1000000000000 ] 2>/dev/null; then
+            mem_limit_bytes="$val"
+        fi
+    fi
+
+    local mem_total_mb=0
+    if [ -n "$mem_limit_bytes" ] && [[ "$mem_limit_bytes" =~ ^[0-9]+$ ]]; then
+        mem_total_mb=$(( mem_limit_bytes / 1024 / 1024 ))
+    elif [ -f "/proc/meminfo" ]; then
+        local kb
+        kb=$(grep MemTotal /proc/meminfo 2>/dev/null | awk '{print $2}' || echo "0")
+        if [[ "$kb" =~ ^[0-9]+$ ]] && [ "$kb" -gt 0 ]; then
+            mem_total_mb=$(( kb / 1024 ))
+        fi
+    fi
+
+    if [ "$mem_total_mb" -le 0 ]; then
+        mem_total_mb=1024
+    fi
+    echo "$mem_total_mb"
+}
+
+MEM_BUDGET_MB=$(detect_memory_budget)
+
+BUILD_PARALLEL_FLAGS=()
+if [ "$MEM_BUDGET_MB" -lt 1500 ] || [ "$FORCE_LOW_RAM" = true ] || [ "${LOW_RAM:-0}" = "1" ]; then
+    echo "${YELLOW}⚡ Low-memory environment detected (${MEM_BUDGET_MB} MB). Optimizing compiler for minimal RAM footprint...${RESET}"
+    TARGET_MEM_LIMIT=$(( MEM_BUDGET_MB * 75 / 100 ))
+    if [ "$TARGET_MEM_LIMIT" -lt 250 ]; then
+        TARGET_MEM_LIMIT=250
+    fi
+    export GOMEMLIMIT="${GOMEMLIMIT:-${TARGET_MEM_LIMIT}MiB}"
+    export GOGC="${GOGC:-25}"
+    export GOMAXPROCS="${GOMAXPROCS:-1}"
+    BUILD_PARALLEL_FLAGS=("-p" "1")
+elif [ "$MEM_BUDGET_MB" -lt 3000 ]; then
+    export GOMEMLIMIT="${GOMEMLIMIT:-$(( MEM_BUDGET_MB * 85 / 100 ))MiB}"
+    export GOGC="${GOGC:-40}"
+    export GOMAXPROCS="${GOMAXPROCS:-2}"
+    BUILD_PARALLEL_FLAGS=("-p" "2")
+fi
+
 LDFLAGS="-s -w"
 if [ "$ENABLE_DEBUG" = true ]; then
     LDFLAGS=""
@@ -547,6 +607,7 @@ BUILD_START_NANO=$(date +%s%N 2>/dev/null || true)
 BUILD_START_SEC=$(date +%s)
 
 CGO_ENABLED=0 GOOS="$TARGET_OS" GOARCH="$TARGET_ARCH" go build \
+    ${BUILD_PARALLEL_FLAGS[@]+"${BUILD_PARALLEL_FLAGS[@]}"} \
     -trimpath \
     ${LDFLAGS:+-ldflags="$LDFLAGS"} \
     -o "$OUTPUT_BINARY" .
