@@ -37,8 +37,9 @@ if ! command -v go >/dev/null 2>&1; then
     fi
 fi
 
-# Ensure reliable Go module downloads in all environments
+# Ensure reliable Go module downloads and toolchain compatibility
 export GOPROXY="${GOPROXY:-https://proxy.golang.org,direct}"
+export GOTOOLCHAIN="${GOTOOLCHAIN:-auto}"
 
 # -----------------------------------------------------------------------------
 # 2. Colors & Terminal Styling
