@@ -576,22 +576,34 @@ detect_memory_budget() {
 
 MEM_BUDGET_MB=$(detect_memory_budget)
 
+# Detect if running in container (Docker/Pelican/Pterodactyl)
+IS_CONTAINER=false
+if [ -f "/.dockerenv" ] || [ -f "/run/.containerenv" ] || [ -d "/mnt/server" ] || [ -n "${SERVER_BINARY:-}" ] || [ -n "${P_SERVER_UUID:-}" ]; then
+    IS_CONTAINER=true
+fi
+
 BUILD_PARALLEL_FLAGS=()
-if [ "$MEM_BUDGET_MB" -lt 1500 ] || [ "$FORCE_LOW_RAM" = true ] || [ "${LOW_RAM:-0}" = "1" ]; then
-    echo "${YELLOW}⚡ Low-memory environment detected (${MEM_BUDGET_MB} MB). Optimizing compiler for minimal RAM footprint...${RESET}"
-    TARGET_MEM_LIMIT=$(( MEM_BUDGET_MB * 75 / 100 ))
-    if [ "$TARGET_MEM_LIMIT" -lt 250 ]; then
-        TARGET_MEM_LIMIT=250
+if [ "$MEM_BUDGET_MB" -lt 1500 ] || [ "$FORCE_LOW_RAM" = true ] || [ "${LOW_RAM:-0}" = "1" ] || [ "$IS_CONTAINER" = true ]; then
+    echo "${YELLOW}⚡ Low-memory/container environment detected. Optimizing compiler for minimal RAM footprint...${RESET}"
+    TARGET_MEM_LIMIT=$(( MEM_BUDGET_MB * 70 / 100 ))
+    if [ "$TARGET_MEM_LIMIT" -lt 250 ] || [ "$TARGET_MEM_LIMIT" -gt 600 ]; then
+        TARGET_MEM_LIMIT=350
     fi
     export GOMEMLIMIT="${GOMEMLIMIT:-${TARGET_MEM_LIMIT}MiB}"
     export GOGC="${GOGC:-25}"
     export GOMAXPROCS="${GOMAXPROCS:-1}"
     BUILD_PARALLEL_FLAGS=("-p" "1")
 elif [ "$MEM_BUDGET_MB" -lt 3000 ]; then
-    export GOMEMLIMIT="${GOMEMLIMIT:-$(( MEM_BUDGET_MB * 85 / 100 ))MiB}"
-    export GOGC="${GOGC:-40}"
+    export GOMEMLIMIT="${GOMEMLIMIT:-$(( MEM_BUDGET_MB * 80 / 100 ))MiB}"
+    export GOGC="${GOGC:-35}"
     export GOMAXPROCS="${GOMAXPROCS:-2}"
     BUILD_PARALLEL_FLAGS=("-p" "2")
+fi
+
+# Ensure temporary files don't fill tmpfs (RAM disk) in containers
+if [ -d "/mnt/server" ] && [ -w "/mnt/server" ]; then
+    mkdir -p "/mnt/server/.gotmp"
+    export GOTMPDIR="${GOTMPDIR:-/mnt/server/.gotmp}"
 fi
 
 LDFLAGS="-s -w"
@@ -611,6 +623,11 @@ CGO_ENABLED=0 GOOS="$TARGET_OS" GOARCH="$TARGET_ARCH" go build \
     -trimpath \
     ${LDFLAGS:+-ldflags="$LDFLAGS"} \
     -o "$OUTPUT_BINARY" .
+
+# Clean up temporary Go directory on disk if created
+if [ -d "/mnt/server/.gotmp" ]; then
+    rm -rf "/mnt/server/.gotmp" 2>/dev/null || true
+fi
 
 if [[ "$BUILD_START_NANO" =~ ^[0-9]+$ ]]; then
     BUILD_END_NANO=$(date +%s%N 2>/dev/null || true)
@@ -637,7 +654,17 @@ fi
 
 chmod +x "$OUTPUT_BINARY"
 
-BINARY_SIZE=$(ls -lh "$OUTPUT_BINARY" | awk '{print $5}')
+BINARY_SIZE=$(ls -lh "$OUTPUT_BINARY" 2>/dev/null | awk '{print $5}' || echo "N/A")
+
+DISPLAY_PATH="$OUTPUT_BINARY"
+if [[ "$OUTPUT_BINARY" != /* ]]; then
+    DISPLAY_PATH="$SCRIPT_DIR/$OUTPUT_BINARY"
+fi
+
+RUN_CMD="./$OUTPUT_BINARY"
+if [[ "$OUTPUT_BINARY" == /* ]]; then
+    RUN_CMD="$OUTPUT_BINARY"
+fi
 
 # -----------------------------------------------------------------------------
 # 12. Build Complete Banner
@@ -646,11 +673,11 @@ echo ""
 echo "${GREEN}============================================================${RESET}"
 echo "${GREEN}  🎉 Build Successful!${BUILD_DURATION}${RESET}"
 echo "${GREEN}============================================================${RESET}"
-echo "  ${BOLD}Artifact:${RESET}   $SCRIPT_DIR/$OUTPUT_BINARY"
+echo "  ${BOLD}Artifact:${RESET}   $DISPLAY_PATH"
 echo "  ${BOLD}Size:${RESET}       $BINARY_SIZE"
 echo "  ${BOLD}Target:${RESET}     ${TARGET_OS}/${TARGET_ARCH} (Static, CGO=0)"
 echo "  ${BOLD}Plugins:${RESET}    ${INDEX} extensions active"
 echo "${GREEN}============================================================${RESET}"
 echo ""
-echo "▶️  ${BOLD}Run Gate:${RESET}  ./${OUTPUT_BINARY}"
+echo "▶️  ${BOLD}Run Gate:${RESET}  $RUN_CMD"
 echo ""
