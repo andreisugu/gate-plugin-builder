@@ -642,13 +642,19 @@ else
 fi
 
 # -----------------------------------------------------------------------------
-# 11. ELF Interpreter Normalization (for Linux x86_64)
+# 11. ELF Interpreter Normalization (for NixOS builds)
 # -----------------------------------------------------------------------------
 if [ "$TARGET_OS" = "linux" ] && [ "$TARGET_ARCH" = "amd64" ] && [ "$SKIP_PATCHELF" = false ]; then
     if command -v patchelf >/dev/null 2>&1; then
-        patchelf --set-interpreter /lib64/ld-linux-x86-64.so.2 "$OUTPUT_BINARY" 2>/dev/null || true
+        INTERP=$(patchelf --print-interpreter "$OUTPUT_BINARY" 2>/dev/null || true)
+        if [[ "$INTERP" == /nix/store/* ]]; then
+            patchelf --set-interpreter /lib64/ld-linux-x86-64.so.2 "$OUTPUT_BINARY" 2>/dev/null || true
+        fi
     elif command -v nix >/dev/null 2>&1; then
-        nix shell nixpkgs#patchelf --command patchelf --set-interpreter /lib64/ld-linux-x86-64.so.2 "$OUTPUT_BINARY" 2>/dev/null || true
+        INTERP=$(nix shell nixpkgs#patchelf --command patchelf --print-interpreter "$OUTPUT_BINARY" 2>/dev/null || true)
+        if [[ "$INTERP" == /nix/store/* ]]; then
+            nix shell nixpkgs#patchelf --command patchelf --set-interpreter /lib64/ld-linux-x86-64.so.2 "$OUTPUT_BINARY" 2>/dev/null || true
+        fi
     fi
 fi
 
